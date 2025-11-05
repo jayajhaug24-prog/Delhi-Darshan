@@ -47,10 +47,10 @@ export const Places = () => {
   );
 
   return (
-    <main className="min-h-screen pt-24 pb-16 bg-gradient-to-b from-white to-orange-600">
+    <main className="min-h-screen pt-24 pb-16 bg-gradient-to-b from-white to-amber-600">
       <div className="max-w-7xl mx-auto px-4">
         <div className="text-center mb-12">
-          <h1 className="text-4xl md:text-5xl font-bold mb-4">
+          <h1 className="text-4xl md:text-5xl font-bold mb-4 text-amber-600">
             Popular Tourist Places
           </h1>
           <p className="text-muted-foreground text-lg mb-8">
