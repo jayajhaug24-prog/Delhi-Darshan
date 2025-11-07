@@ -8,7 +8,7 @@ export const Home = () => {
   return (
     <div className="relative w-full h-screen bg-[url('/bg.jpg')] bg-cover bg-center">
       {/* Gradient Overlay */}
-      <div className="absolute inset-0 bg-linear-to-t from-black/80 via-transparent to-transparent"></div>
+      <div className="absolute inset-0 bg-linear-to-r from-black/40 via-transparent to-black/40"></div>
 
       {/* Text Content */}
       <div className="relative z-10 flex flex-col justify-center-x items-center h-full">
@@ -59,7 +59,7 @@ export const Home = () => {
                   <Car className="h-8 w-8 text-amber-600" />
                 </div>
                 <h3 className="text-xl font-bold mb-2">Cab Booking</h3>
-                <p className="text-muted-foreground">Calculate estimated fares for your journey</p>
+                <p className="text-muted-foreground">Calculate estimated fares for your journey and connect with the local drivers.</p>
               </div>
             </Link>
             <Link to="/hidden-gems" className="group">
@@ -68,7 +68,7 @@ export const Home = () => {
                   <Sparkles className="h-6 w-6 text-amber-600" />
                 </div>
                 <h3 className="text-xl font-bold mb-2">Hidden Gems</h3>
-                <p className="text-muted-foreground">Find and share secret spots loved by locals</p>
+                <p className="text-muted-foreground">Find and share secret spots loved by locals and experience Delhi like a local.</p>
               </div>
             </Link>
           </div>
