@@ -105,7 +105,12 @@ export const getPlaceDetails = (placeId, callback) => {
           ],
         },
         (result, status) => {
-          if (status === window.google.maps.places.PlacesServiceStatus.OK && result) {
+          const G = (typeof window !== 'undefined' && window.google) ? window.google : null;
+          const okStatus = (G && G.maps && G.maps.places)
+            ? G.maps.places.PlacesServiceStatus.OK
+            : 'OK';
+
+          if (status === okStatus && result) {
             const placeData = {
               title: result.name,
               location: result.formatted_address,
