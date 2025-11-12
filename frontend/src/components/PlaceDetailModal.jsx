@@ -92,8 +92,6 @@ export const PlaceDetailModal = ({ place, isOpen, onClose }) => {
                       } catch (e) {
                         isOpenNow = false;
                       }
-                    } else if (r.opening_hours && typeof r.opening_hours.open_now !== 'undefined') {
-                      isOpenNow = r.opening_hours.open_now;
                     }
 
                     resolve({
