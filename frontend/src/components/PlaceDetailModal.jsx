@@ -75,8 +75,40 @@ export const PlaceDetailModal = ({ place, isOpen, onClose }) => {
           maxResults: 6,
         },
         (results, status) => {
-          if (status === window.google.maps.places.PlacesServiceStatus.OK) {
-            setNearbyPlaces(results.slice(0, 5));
+          const ok = window.google?.maps?.places ? window.google.maps.places.PlacesServiceStatus.OK : 'OK';
+          if (status === ok && results && results.length) {
+            const top = results.slice(0, 5);
+
+            const enriched = top.map((r) =>
+              new Promise((resolve) => {
+                service.getDetails(
+                  { placeId: r.place_id, fields: ['opening_hours', 'name', 'rating', 'vicinity', 'types'] },
+                  (detail, dStatus) => {
+                    const okDetail = window.google?.maps?.places ? window.google.maps.places.PlacesServiceStatus.OK : 'OK';
+                    let isOpenNow = false;
+                    if (dStatus === okDetail && detail && detail.opening_hours && typeof detail.opening_hours.isOpen === 'function') {
+                      try {
+                        isOpenNow = detail.opening_hours.isOpen();
+                      } catch (e) {
+                        isOpenNow = false;
+                      }
+                    } else if (r.opening_hours && typeof r.opening_hours.open_now !== 'undefined') {
+                      isOpenNow = r.opening_hours.open_now;
+                    }
+
+                    resolve({
+                      ...r,
+                      isOpenNow,
+                      vicinity: r.vicinity,
+                      types: r.types,
+                      rating: r.rating,
+                    });
+                  }
+                );
+              })
+            );
+
+            Promise.all(enriched).then((items) => setNearbyPlaces(items));
           }
         }
       );
