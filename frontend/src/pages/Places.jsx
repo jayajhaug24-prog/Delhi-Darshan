@@ -227,13 +227,6 @@ export const Places = () => {
           </>
         )}
       </div>
-
-      {/* Place Detail Modal */}
-      <PlaceDetailModal
-        place={selectedPlace}
-        isOpen={modalOpen}
-        onClose={() => setModalOpen(false)}
-      />
     </main>
   );
 };
