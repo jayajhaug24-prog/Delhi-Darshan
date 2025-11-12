@@ -55,7 +55,12 @@ export const searchPlaces = (query, callback) => {
           componentRestrictions: { country: 'in' },
         },
         (predictions, status) => {
-          if (status === window.google.maps.places.PlacesServiceStatus.OK && predictions) {
+          const G = (typeof window !== 'undefined' && window.google) ? window.google : null;
+          const okStatus = (G && G.maps && G.maps.places)
+            ? G.maps.places.PlacesServiceStatus.OK
+            : 'OK';
+
+          if (status === okStatus && predictions) {
             const mapped = predictions.map((p) => ({
               main_text: p.structured_formatting?.main_text || p.description || '',
               secondary_text: p.structured_formatting?.secondary_text || '',
