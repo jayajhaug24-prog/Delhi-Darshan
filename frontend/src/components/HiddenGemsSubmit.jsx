@@ -7,26 +7,45 @@ import { Label } from "@/components/ui/label";
 import { Sparkles } from "lucide-react";
 import { toast } from "sonner";
 
-const HiddenGemsSubmit = () => {
+const HiddenGemsSubmit = ({ onAdd }) => {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [submitter, setSubmitter] = useState("");
+  const [address, setAddress] = useState("");
+  const [lat, setLat] = useState("");
+  const [lng, setLng] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (!name || !description || !submitter) {
-      toast.error("Please fill in all fields");
+    if (!name) {
+      toast.error("Please provide the place name");
       return;
     }
 
-    // In a real app, this would save to a database
-    toast.success("Thank you for sharing this hidden gem!");
+    const payload = {
+      name,
+      description,
+      submittedBy: submitter || 'Anonymous',
+      address: address || '',
+      lat: lat ? parseFloat(lat) : null,
+      lng: lng ? parseFloat(lng) : null,
+    };
+
+    if (typeof onAdd === 'function') {
+      onAdd(payload);
+      toast.success("Thank you for sharing this hidden gem!");
+    } else {
+      toast.success("Thank you for sharing this hidden gem! (local only)");
+    }
 
     // Reset form
     setName("");
     setDescription("");
     setSubmitter("");
+    setAddress("");
+    setLat("");
+    setLng("");
   };
 
   return (
