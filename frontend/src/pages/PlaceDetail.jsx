@@ -166,9 +166,6 @@ export const PlaceDetail = () => {
                     } catch (e) {
                       isOpenNow = false;
                     }
-                  } else if (r.opening_hours && typeof r.opening_hours.open_now !== 'undefined') {
-                    // Fallback for older results
-                    isOpenNow = r.opening_hours.open_now;
                   }
 
                   resolve({
