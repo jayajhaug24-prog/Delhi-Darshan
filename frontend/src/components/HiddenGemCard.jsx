@@ -19,8 +19,17 @@ const HiddenGemCard = ({ name, description, submittedBy, image }) => {
       <CardContent className="p-6">
         <h3 className="text-xl font-bold mb-2 pr-8 font-serif">{name}</h3>
         <p className="text-muted-foreground text-sm mb-3">{description}</p>
+        {image && (
+          <p className="text-xs text-gray-600 mb-2">Image sourced from Google Maps</p>
+        )}
         {submittedBy && (
           <p className="text-xs text-muted-foreground italic">Shared by: {submittedBy}</p>
+        )}
+        {typeof address !== 'undefined' && address && (
+          <div className="mt-3 flex items-center gap-2 text-sm text-gray-600">
+            <MapPin className="h-4 w-4 text-amber-600" />
+            <span>{address}</span>
+          </div>
         )}
       </CardContent>
     </Card>
