@@ -80,22 +80,52 @@ const HiddenGemsSubmit = ({ onAdd }) => {
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="submitter-name">Your Name</Label>
+          <Label htmlFor="submitter-name">Your Name</Label>
+          <Input
+            id="submitter-name"
+            placeholder="Enter your name..."
+            value={submitter}
+            onChange={(e) => setSubmitter(e.target.value)}
+          />
+        </div>
+
+        <div className="grid grid-cols-2 gap-3">
+          <div className="space-y-2">
+            <Label htmlFor="gem-address">Address</Label>
             <Input
-              id="submitter-name"
-              placeholder="Enter your name..."
-              value={submitter}
-              onChange={(e) => setSubmitter(e.target.value)}
+              id="gem-address"
+              placeholder="Address or place name"
+              value={address}
+              onChange={(e) => setAddress(e.target.value)}
             />
           </div>
+          <div className="space-y-2">
+            <Label htmlFor="gem-lat">Latitude</Label>
+            <Input
+              id="gem-lat"
+              placeholder="Latitude"
+              value={lat}
+              onChange={(e) => setLat(e.target.value)}
+            />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="gem-lng">Longitude</Label>
+            <Input
+              id="gem-lng"
+              placeholder="Longitude"
+              value={lng}
+              onChange={(e) => setLng(e.target.value)}
+            />
+          </div>
+        </div>
 
-          <Button type="submit" className="w-full bg-amber-600 hover:bg-amber-700" size="lg">
-            Submit Hidden Gem
-          </Button>
-        </form>
-      </CardContent>
-    </Card>
-  );
+        <Button type="submit" className="w-full bg-amber-600 hover:bg-amber-700" size="lg">
+          Submit Hidden Gem
+        </Button>
+      </form>
+    </CardContent>
+  </Card>
+);
 };
 
 export default HiddenGemsSubmit;
