@@ -152,7 +152,12 @@ export const getNearbyPlaces = (lat, lng, type = 'cafe', radius = 1000, callback
           type,
         },
         (results, status) => {
-          if (status === window.google.maps.places.PlacesServiceStatus.OK && results) {
+          const G = (typeof window !== 'undefined' && window.google) ? window.google : null;
+          const okStatus = (G && G.maps && G.maps.places)
+            ? G.maps.places.PlacesServiceStatus.OK
+            : 'OK';
+
+          if (status === okStatus && results) {
             callback(results, null);
           } else {
             callback([], status);
