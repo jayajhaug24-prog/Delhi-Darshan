@@ -50,13 +50,12 @@ const popularPlaces = [
 ];
 
 export const Places = () => {
+  const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState("");
-  const [selectedPlace, setSelectedPlace] = useState(null);
   const [searchResults, setSearchResults] = useState([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [isSearching, setIsSearching] = useState(false);
   const [displayedPlaces, setDisplayedPlaces] = useState(popularPlaces);
-  const [modalOpen, setModalOpen] = useState(false);
   const searchInputRef = useRef(null);
 
   // Handle search input
@@ -77,21 +76,13 @@ export const Places = () => {
     }
   };
 
-  // Handle suggestion click
+  // Handle suggestion click - navigate to detail page
   const handleSuggestionClick = (prediction) => {
-    setIsSearching(true);
-    getPlaceDetails(prediction.place_id, (placeData, status) => {
-      if (placeData) {
-        setSelectedPlace(placeData);
-        setModalOpen(true);
-        setSearchQuery(placeData.title);
-        setShowSuggestions(false);
-      }
-      setIsSearching(false);
-    });
+    navigate(`/places/${encodeURIComponent(prediction.place_id)}`);
+    setShowSuggestions(false);
   };
 
-  // Handle predefined place click
+  // Handle predefined place click - navigate to detail page
   const handlePredefinedPlaceClick = (place) => {
     const placeData = {
       title: place.name,
@@ -100,8 +91,7 @@ export const Places = () => {
       lat: place.lat,
       lng: place.lng,
     };
-    setSelectedPlace(placeData);
-    setModalOpen(true);
+    navigate(`/places/${encodeURIComponent(place.name)}`);
   };
 
   // Map markers from displayed places
