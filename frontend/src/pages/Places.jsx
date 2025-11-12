@@ -1,12 +1,14 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import GoogleMapComponent from "@/components/GoogleMapComponent";
+import PlaceDetailModal from "@/components/PlaceDetailModal";
+import { searchPlaces, getPlaceDetails } from "@/lib/placeService";
 import redFort from "@/assets/redfort.jpeg";
 import qutubMinar from "@/assets/qutub-minar.jpeg";
 import lotusTemple from "@/assets/lotustemple.jpeg";
 import humayunTomb from "@/assets/humayutomb.jpeg";
-import { Search,MapPin } from "lucide-react";
+import { Search, MapPin, Loader } from "lucide-react";
 
 const popularPlaces = [
   {
