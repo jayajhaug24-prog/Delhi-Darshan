@@ -39,7 +39,7 @@ export const GoogleMapComponent = ({
 
   return (
     <LoadScript
-      googleMapsApiKey={import.meta.env.REACT_APP_GOOGLE_MAPS_API}
+      googleMapsApiKey={import.meta.env.VITE_GOOGLE_MAPS_API}
       libraries={['places', 'geometry']}
     >
       <GoogleMap
