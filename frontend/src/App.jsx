@@ -1,6 +1,7 @@
 import { Navbar } from './components/Navbar';
 import { Home } from './pages/Home';
 import { Places } from './pages/Places';
+import { PlaceDetail } from './pages/PlaceDetail';
 import { CabCalculatorPage } from './pages/CabBooking';
 import { HiddenGems  } from './pages/HiddenGems';
 import { Auth } from './pages/Auth';
@@ -17,17 +18,18 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/places" element={<Places/>} />
+          <Route path="/places/:placeId" element={<PlaceDetail />} />
           <Route path="/cab-booking" element={<CabCalculatorPage />} />
           <Route path="/hidden-gems" element={<HiddenGems />} />
           <Route path="/signin" element={<Auth />} />
         </Routes>
-        <Toaster 
-              position="bottom-center" 
-              richColors 
-              closeButton 
+        <Toaster
+              position="bottom-center"
+              richColors
+              closeButton
               duration={3000}
         />
-      
+
     </>
   )
 }
