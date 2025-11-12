@@ -1,21 +1,28 @@
 import HiddenGemCard from "@/components/HiddenGemCard";
 import HiddenGemsSubmit from "@/components/HiddenGemsSubmit";
+import GoogleMapComponent from "@/components/GoogleMapComponent";
 
 const hiddenGems = [
   {
     name: "Agrasen ki Baoli",
     description: "A 60-meter long and 15-meter wide historical stepwell hidden in the heart of Delhi",
-    submittedBy: "Priya S."
+    submittedBy: "Priya S.",
+    lat: 28.6304,
+    lng: 77.1991,
   },
   {
     name: "Lodhi Art District",
     description: "India's first public art district featuring stunning street art and murals",
-    submittedBy: "Rahul M."
+    submittedBy: "Rahul M.",
+    lat: 28.5933,
+    lng: 77.2197,
   },
   {
     name: "Sunder Nursery",
     description: "A 90-acre heritage park with Mughal-era monuments and beautiful gardens",
-    submittedBy: "Ananya K."
+    submittedBy: "Ananya K.",
+    lat: 28.5942,
+    lng: 77.2470,
   }
 ];
 
@@ -43,4 +50,3 @@ export const HiddenGems = () => {
     </main>
   );
 };
-
