@@ -1,5 +1,5 @@
 import { Card, CardContent } from "@/components/ui/card";
-import { Sparkles } from "lucide-react";
+import { Sparkles, MapPin } from "lucide-react";
 
 const HiddenGemCard = ({ name, description, submittedBy, image }) => {
   return (
