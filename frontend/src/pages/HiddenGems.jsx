@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import HiddenGemCard from "@/components/HiddenGemCard";
 import HiddenGemsSubmit from "@/components/HiddenGemsSubmit";
 import GoogleMapComponent from "@/components/GoogleMapComponent";
-import { getPhotoForPlace } from '@/lib/placeService';
+import { getPhotoForPlace, geocodeAddress } from '@/lib/placeService';
 
 const initialHiddenGems = [
   {
@@ -36,6 +36,8 @@ export const HiddenGems = () => {
     initialHiddenGems.map((g) => ({ ...g, image: null }))
   );
 
+  const [form, setForm] = useState({ name: '', description: '', address: '', lat: '', lng: '' });
+
   useEffect(() => {
     // Fetch photos for each gem and update state
     gems.forEach((gem, idx) => {
@@ -53,12 +55,88 @@ export const HiddenGems = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const mapMarkers = gems.map((gem) => ({
-    title: gem.name,
-    lat: gem.lat,
-    lng: gem.lng,
-    description: gem.description,
-  }));
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setForm((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const addGemToState = (newGem) => {
+    setGems((prev) => [newGem, ...prev]);
+
+    // fetch photo
+    getPhotoForPlace(newGem.name, newGem.lat, newGem.lng, (url) => {
+      if (url) {
+        setGems((prev) => {
+          const copy = [...prev];
+          copy[0] = { ...copy[0], image: url };
+          return copy;
+        });
+      }
+    });
+  };
+
+  const handleAdd = async (e) => {
+    e.preventDefault();
+    const { name, description, address, lat, lng } = form;
+    if (!name) return;
+
+    if (lat && lng) {
+      const parsedLat = parseFloat(lat);
+      const parsedLng = parseFloat(lng);
+      const newGem = {
+        name,
+        description,
+        submittedBy: 'Anonymous',
+        address: address || '',
+        lat: Number.isFinite(parsedLat) ? parsedLat : null,
+        lng: Number.isFinite(parsedLng) ? parsedLng : null,
+        image: null,
+      };
+      addGemToState(newGem);
+      setForm({ name: '', description: '', address: '', lat: '', lng: '' });
+      return;
+    }
+
+    if (address) {
+      // geocode address
+      geocodeAddress(address, (res, err) => {
+        const newGem = {
+          name,
+          description,
+          submittedBy: 'Anonymous',
+          address: res?.formatted_address || address,
+          lat: res?.lat ?? null,
+          lng: res?.lng ?? null,
+          image: null,
+        };
+        addGemToState(newGem);
+        setForm({ name: '', description: '', address: '', lat: '', lng: '' });
+      });
+      return;
+    }
+
+    // fallback: add without coords/address
+    const newGem = {
+      name,
+      description,
+      submittedBy: 'Anonymous',
+      address: '',
+      lat: null,
+      lng: null,
+      image: null,
+    };
+    addGemToState(newGem);
+    setForm({ name: '', description: '', address: '', lat: '', lng: '' });
+  };
+
+  const mapMarkers = gems
+    .filter((g) => typeof g.lat === 'number' && typeof g.lng === 'number')
+    .map((gem) => ({
+      title: gem.name,
+      lat: gem.lat,
+      lng: gem.lng,
+      description: gem.description,
+    }));
 
   return (
     <main className="min-h-screen pt-24 pb-16 bg-linear-to-b from-white to-amber-600 ">
@@ -70,6 +148,56 @@ export const HiddenGems = () => {
           <p className="text-muted-foreground text-lg">
             Discover and share Delhi's best-kept secrets
           </p>
+        </div>
+
+        <div className="mb-6 max-w-3xl mx-auto">
+          <form onSubmit={handleAdd} className="grid grid-cols-1 md:grid-cols-2 gap-3 bg-white p-4 rounded-lg shadow-sm">
+            <input
+              name="name"
+              value={form.name}
+              onChange={handleChange}
+              placeholder="Place name (required)"
+              className="border rounded px-3 py-2 w-full"
+            />
+            <input
+              name="submittedBy"
+              value={form.submittedBy || ''}
+              onChange={handleChange}
+              placeholder="Your name (optional)"
+              className="border rounded px-3 py-2 w-full"
+            />
+            <input
+              name="address"
+              value={form.address}
+              onChange={handleChange}
+              placeholder="Address (optional)"
+              className="border rounded px-3 py-2 w-full md:col-span-2"
+            />
+            <input
+              name="lat"
+              value={form.lat}
+              onChange={handleChange}
+              placeholder="Latitude (optional)"
+              className="border rounded px-3 py-2 w-full"
+            />
+            <input
+              name="lng"
+              value={form.lng}
+              onChange={handleChange}
+              placeholder="Longitude (optional)"
+              className="border rounded px-3 py-2 w-full"
+            />
+            <input
+              name="description"
+              value={form.description}
+              onChange={handleChange}
+              placeholder="Short description (optional)"
+              className="border rounded px-3 py-2 w-full md:col-span-2"
+            />
+            <div className="md:col-span-2 flex justify-end">
+              <button className="bg-amber-600 text-white px-4 py-2 rounded">Add Location</button>
+            </div>
+          </form>
         </div>
 
         <div className="mb-12">
@@ -91,3 +219,5 @@ export const HiddenGems = () => {
     </main>
   );
 };
+
+export default HiddenGems;
