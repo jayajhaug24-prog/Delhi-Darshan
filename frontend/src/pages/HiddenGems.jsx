@@ -1,8 +1,10 @@
+import { useEffect, useState } from 'react';
 import HiddenGemCard from "@/components/HiddenGemCard";
 import HiddenGemsSubmit from "@/components/HiddenGemsSubmit";
 import GoogleMapComponent from "@/components/GoogleMapComponent";
+import { getPhotoForPlace } from '@/lib/placeService';
 
-const hiddenGems = [
+const initialHiddenGems = [
   {
     name: "Agrasen ki Baoli",
     description: "A 60-meter long and 15-meter wide historical stepwell hidden in the heart of Delhi",
@@ -27,7 +29,28 @@ const hiddenGems = [
 ];
 
 export const HiddenGems = () => {
-  const mapMarkers = hiddenGems.map((gem) => ({
+  const [gems, setGems] = useState(
+    initialHiddenGems.map((g) => ({ ...g, image: null }))
+  );
+
+  useEffect(() => {
+    // Fetch photos for each gem and update state
+    gems.forEach((gem, idx) => {
+      if (gem.image) return; // already loaded
+      getPhotoForPlace(gem.name, gem.lat, gem.lng, (url, err) => {
+        if (url) {
+          setGems((prev) => {
+            const copy = [...prev];
+            copy[idx] = { ...copy[idx], image: url };
+            return copy;
+          });
+        }
+      });
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const mapMarkers = gems.map((gem) => ({
     title: gem.name,
     lat: gem.lat,
     lng: gem.lng,
@@ -55,7 +78,7 @@ export const HiddenGems = () => {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
-          {hiddenGems.map((gem, index) => (
+          {gems.map((gem, index) => (
             <HiddenGemCard key={index} {...gem} />
           ))}
         </div>
