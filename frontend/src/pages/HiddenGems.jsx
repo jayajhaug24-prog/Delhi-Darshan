@@ -136,6 +136,7 @@ export const HiddenGems = () => {
       lat: gem.lat,
       lng: gem.lng,
       description: gem.description,
+      location: gem.address || '',
     }));
 
   return (
