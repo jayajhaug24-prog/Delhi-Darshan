@@ -38,10 +38,6 @@ export const GoogleMapComponent = ({
   const containerStyle = { ...mapContainerStyle, height };
 
   return (
-    <LoadScript
-      googleMapsApiKey={import.meta.env.VITE_GOOGLE_MAPS_API}
-      libraries={['places', 'geometry']}
-    >
       <GoogleMap
         mapContainerStyle={containerStyle}
         center={center}
@@ -97,7 +93,6 @@ export const GoogleMapComponent = ({
           />
         )}
       </GoogleMap>
-    </LoadScript>
   );
 };
 
